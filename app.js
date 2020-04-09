@@ -21,18 +21,25 @@ function addTransaction(e) {
 
   if (text.value.trim() === '' || amount.value.trim() === '') {
     alert('Please add a text and amount');
-  }else{
-      const transaction = {
-        id:generateID(),
-        amount:amount.value
-      }
-      transactions.push(transaction);
+  } else {
+    const transaction = {
+      id: generateID(),
+      text:text.value,
+      amount: +amount.value
+    };
+    transactions.push(transaction);
+
+    addTransactionDOM(transaction);
+
+    updateValues();
+    text.value = '';
+    amount.value = '';
   }
 }
 
 // Generate random ID
-function generateID(){
-    return Math.floor(Math.random()*100000000)
+function generateID() {
+  return Math.floor(Math.random() * 100000000);
 }
 
 // Add transactions to DOM list
@@ -58,7 +65,7 @@ function addTransactionDOM(transaction) {
 // Update the balance, income and expense
 function updateValues() {
   const amounts = transactions.map((transaction) => transaction.amount);
-  const total = amounts.reduce((a, b) => (a += b), 0).toFixed(2);
+  const total = (amounts.reduce((a, b) => (a += b), 0)).toFixed(2);
 
   const income = amounts
     .filter((item) => item > 0)
