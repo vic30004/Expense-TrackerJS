@@ -24,8 +24,8 @@ function addTransaction(e) {
   } else {
     const transaction = {
       id: generateID(),
-      text:text.value,
-      amount: +amount.value
+      text: text.value,
+      amount: +amount.value,
     };
     transactions.push(transaction);
 
@@ -55,7 +55,9 @@ function addTransactionDOM(transaction) {
   item.innerHTML = `
   ${transaction.text} <span>${sign}${Math.abs(
     transaction.amount
-  )}</span> <button class="delete-btn">x</button>
+  )}</span> <button class="delete-btn" onclick="removeTransaction(${
+    transaction.id
+  })">x</button>
   
   `;
 
@@ -65,7 +67,7 @@ function addTransactionDOM(transaction) {
 // Update the balance, income and expense
 function updateValues() {
   const amounts = transactions.map((transaction) => transaction.amount);
-  const total = (amounts.reduce((a, b) => (a += b), 0)).toFixed(2);
+  const total = amounts.reduce((a, b) => (a += b), 0).toFixed(2);
 
   const income = amounts
     .filter((item) => item > 0)
@@ -79,6 +81,14 @@ function updateValues() {
   balance.innerText = `$${total}`;
   money_plus.innerText = `$${income}`;
   money_minus.innerText = `$${expense}`;
+}
+
+// remove transaction by id
+
+function removeTransaction(id) {
+  transactions = transactions.filter((transaction) => transaction.id !== id);
+
+  init();
 }
 
 // Init app
